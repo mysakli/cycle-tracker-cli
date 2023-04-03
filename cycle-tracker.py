@@ -4,7 +4,8 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound 
 import click
-from datetime import datetime
+from datetime import  datetime, timedelta, date
+# import datetime
 
 db = create_engine("sqlite:///periods.sqlite")
 
@@ -67,12 +68,14 @@ def new(start, end):
   session.add(period)
   session.commit()
   
-
-  click.echo(f'Cycle added. Average cycle length is {period.avg_cycle_length}.')
+  if period.avg_cycle_length == None:
+    click.echo(f'Cycle added! Average cycle length couldn\'t be calculated yet.')
+  else:
+    click.echo(f'Cycle added! Average cycle length is {int(period.avg_cycle_length)} days.')
 
 @cycle.command()
 @click.option('--period_id', prompt='Period id', help='Insert period id')
-def detail(period_id):
+def overview(period_id):
   session = connect()
   period = session.query(Period).filter_by(id = period_id).one()
   click.echo(f'Period id {period.id} | from {period.start_date} to {period.end_date} | duration {period.duration} days')
@@ -89,12 +92,17 @@ def delete(period_id):
   click.echo(f'Period with ID {period_id} deleted.')
 
 @cycle.command()
-def avg():
+def next():
   session = connect()
 
-  q = session.query((func.avg(Period.cycle_length))).scalar()
+  avg_cycle_length = session.query((func.avg(Period.cycle_length))).scalar()
+  today = date.today()
+
+  next_period_start = today + timedelta(days = avg_cycle_length)
   
-  print(f'Average cycle length is {q}.')
+  print(f'Average cycle length is {avg_cycle_length} days. Next period is expected to start on {next_period_start}.')
+
+  
 
 
 if __name__ == "__main__":
