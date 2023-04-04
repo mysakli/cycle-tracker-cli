@@ -7,20 +7,20 @@ This is an app written in Python that uses the CLICK library for command-line in
 
 To run this app, you need the following requirements:
 
-Python 3.6 or higher
-Pipenv package manager
-Installation
+- Python 3.6 or higher
+- Pipenv package manager
+
+### Installation
 To install this app, follow these steps:
 
-Clone/fork the repository from GitHub:
-git
-Navigate to the project directory and install the dependencies using Pipenv:
+1. Clone/fork the repository from GitHub
+2. Navigate to the project directory and install the dependencies using Pipenv:
 
-    pipenv install
+        pipenv install
 
-Activate the virtual environment:
+3. Activate the virtual environment:
 
-    pipenv shell
+        pipenv shell
 
 ## Usage
 
@@ -28,17 +28,26 @@ To run the app, use the cli.py file in the root directory. You can use the follo
 
 
         python cycle-tracker.py <command> [options]
-Here is a list of commands available:
 
-- `new` :  Adds a new period
-- `overview` : Displays selected data // tbd
-- `delete` : Deletes a period entry
-- `next` : Shows the average cycle length and calculates the expected date of the next 
+### Here is a list of commands available:
+
+**`new`** | Adds a new period
+
+**`overview`** | *Displays selected data // tbd*
+
+**`delete`** | Deletes a period entry
+
+**`next`** | Calculates the expected date of the next period 
+
+Example:
+
+        python cycle-tracker.py overview
+    
 
 Each command has its own options and parameters. You can see the details of each command using the --help option:
 
 
-    python cli.py <command> --help
+    python cycle-tracker.py <command> --help
 
 ## License
 This app is licensed under the MIT License. See the LICENSE file for more information.

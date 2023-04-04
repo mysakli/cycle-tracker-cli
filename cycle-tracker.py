@@ -74,11 +74,16 @@ def new(start, end):
     click.echo(f'Cycle added! Average cycle length is {int(period.avg_cycle_length)} days.')
 
 @cycle.command()
-@click.option('--period_id', prompt='Period id', help='Insert period id')
-def overview(period_id):
-  session = connect()
-  period = session.query(Period).filter_by(id = period_id).one()
-  click.echo(f'Period id {period.id} | from {period.start_date} to {period.end_date} | duration {period.duration} days')
+# @click.option('--period_id', prompt='Period id', help='Insert period id')
+def overview():
+  session = connect() 
+  # period_n = session.query(Period).filter_by(id = period_id).one()
+  # click.echo(f'Period id {period.id} | from {period.start_date} to {period.end_date} | duration {period.duration} days')
+
+  periods = session.query(Period).all()
+
+  for period in periods:
+    click.echo(f'{period.start_date} | {period.end_date} | {period.duration} days| {period.cycle_length} | {period.avg_cycle_length}')
 
 
 @cycle.command()
