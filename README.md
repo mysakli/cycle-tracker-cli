@@ -29,11 +29,12 @@ To run the app, use the cli.py file in the root directory. You can use the follo
 
         python cycle-tracker.py <command> [options]
 
+
 ### Here is a list of commands available:
 
-**`new`** | Adds a new period
+**`add`** | Adds a new period
 
-**`overview`** | *Displays selected data // tbd*
+**`overview`** | Displays all or given number of entries (starting with the most recent one)
 
 **`delete`** | Deletes a period entry
 
@@ -41,13 +42,11 @@ To run the app, use the cli.py file in the root directory. You can use the follo
 
 Example:
 
-        python cycle-tracker.py overview
+    python cycle-tracker.py overview
     
+**Important!** 
 
-Each command has its own options and parameters. You can see the details of each command using the --help option:
-
-
-    python cycle-tracker.py <command> --help
+ If you intend to use the database for personal tracking, make sure to delete the example data first.
 
 ## License
 This app is licensed under the MIT License. See the LICENSE file for more information.

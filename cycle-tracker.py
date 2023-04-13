@@ -40,9 +40,8 @@ def cycle():
 @cycle.command()
 @click.option('--start', prompt='First day of period (DD-MM-YYYY)')
 @click.option('--end', prompt='Last day of period (DD-MM-YYYY)')
-def new(start, end):
+def add(start, end):
   session = connect()
-  
   
   f_start = datetime.strptime(start, '%d-%m-%Y').date()
   f_end = datetime.strptime(end, '%d-%m-%Y').date()
@@ -74,17 +73,22 @@ def new(start, end):
     click.echo(f'Cycle added! Average cycle length is {int(period.avg_cycle_length)} days.')
 
 @cycle.command()
-# @click.option('--period_id', prompt='Period id', help='Insert period id')
-def overview():
+@click.option('--all', prompt='Do you want to list all entries?', is_flag=True, help='Lists given number of entries')
+def overview(all):
   session = connect() 
-  # period_n = session.query(Period).filter_by(id = period_id).one()
-  # click.echo(f'Period id {period.id} | from {period.start_date} to {period.end_date} | duration {period.duration} days')
+  queryset = session.query(Period).all()
+  entries_count = session.query((func.count(Period.id))).scalar()
 
-  periods = session.query(Period).all()
-
-  for period in periods:
+  if all == False:
+    queried_entries = int(input(f'How many recent entries do you want to see (max. {entries_count})? '))
+    
+    queryset = session.query(Period).filter(Period.id > entries_count - queried_entries)
+  
+  for period in queryset:
     click.echo(f'{period.start_date} | {period.end_date} | {period.duration} days| {period.cycle_length} | {period.avg_cycle_length}')
-
+   
+     
+ 
 
 @cycle.command()
 @click.option('--period_id', prompt='Period ID to be deleted', help='Delete entry by period ID')
@@ -105,7 +109,7 @@ def next():
 
   next_period_start = today + timedelta(days = avg_cycle_length)
   
-  print(f'Average cycle length is {avg_cycle_length} days. Next period is expected to start on {next_period_start}.')
+  print(f'Next period is expected to start on {next_period_start}. Average cycle length is {avg_cycle_length} days.')
 
   
 
